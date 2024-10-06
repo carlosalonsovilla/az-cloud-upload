@@ -4,7 +4,7 @@ This is a simple Bash script for uploading files to Azure Blob Storage.
 
 ## Usage
 
-Run the script using the following syntacx:
+Run the script using the following syntax:
 
 ```bash
 ./azure_uploader.sh <container_name> <file_path>
