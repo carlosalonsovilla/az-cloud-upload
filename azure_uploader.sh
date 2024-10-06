@@ -34,7 +34,7 @@ if [ $? -eq 0 ]; then
     if [ "$generate_sas" == "yes" ]; then
         sas_token=$(az storage blob generate-sas --account-name $AZURE_STORAGE_ACCOUNT --container-name $CONTAINER_NAME --name $BLOB_NAME --permissions r --expiry $(date -u -d "1 hour" '+%Y-%m-%dT%H:%MZ') --auth-mode key --output tsv)
 
-        #Generate URL
+        #Generate URL with SAS token
         blob_url="https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$CONTAINER_NAME/$BLOB_NAME?$sas_token"
         #Output URL
         echo "The file can be accessed at: $blob_url"
