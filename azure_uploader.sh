@@ -28,6 +28,20 @@ az storage blob upload --account-name $AZURE_STORAGE_ACCOUNT --container-name $C
 
 if [ $? -eq 0 ]; then 
     echo "Successfully uploaded file to Azure Blob Storage."
+
+    read -p "Do you want to generate a SAS Token for this file? (yes/no): " generate_sas
+
+    if [ "$generate_sas" == "yes" ]; then
+        sas_token=$(az storage blob generate-sas --account-name $AZURE_STORAGE_ACCOUNT --container-name $CONTAINER_NAME --name $BLOB_NAME --permissions r --expiry $(date -u -d "1 hour" '+%Y-%m-%dT%H:%MZ') --auth-mode key --output tsv)
+
+        #Generate URL
+        blob_url="https://$AZURE_STORAGE_ACCOUNT.blob.core.windows.net/$CONTAINER_NAME/$BLOB_NAME?$sas_token"
+        #Output URL
+        echo "The file can be accessed at: $blob_url"
+    else
+        echo "SAS Token generation skipped."
+    fi
+
 else
     echo "Error occurred during upload."
     exit 1
